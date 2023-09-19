@@ -29,5 +29,7 @@
         "arch/loongarch/**": true,
         "arch/x86/**": true,
         "drivers/**": true,
+        "**/*.o": true,
+        "**/*.cmd": true,
     }
 }
