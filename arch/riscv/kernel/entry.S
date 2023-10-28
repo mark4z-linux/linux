@@ -249,6 +249,7 @@ ret_from_syscall_rejected:
 	bnez t0, handle_syscall_trace_exit
 
 ret_from_exception:
+	call tracing_print_task_info
 	REG_L s0, PT_STATUS(sp)
 	csrc CSR_STATUS, SR_IE
 #ifdef CONFIG_TRACE_IRQFLAGS

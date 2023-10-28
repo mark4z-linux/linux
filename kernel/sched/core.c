@@ -5088,6 +5088,12 @@ asmlinkage __visible void schedule_tail(struct task_struct *prev)
 	calculate_sigpending();
 }
 
+void __sched tracing_current_task_info(void)
+{
+	struct task_struct *tsk = current;
+	printk("current task: %s", tsk->comm);
+}
+
 /*
  * context_switch - switch to the new MM and the new thread's register state.
  */
@@ -5143,7 +5149,9 @@ context_switch(struct rq *rq, struct task_struct *prev,
 	prepare_lock_switch(rq, next, rf);
 
 	/* Here we just switch the register state and the stack. */
+	tracing_current_task_info();
 	switch_to(prev, next, prev);
+	tracing_current_task_info();
 	barrier();
 
 	return finish_task_switch(prev);
@@ -6533,6 +6541,15 @@ asmlinkage __visible void __sched schedule(void)
 	sched_update_worker(tsk);
 }
 EXPORT_SYMBOL(schedule);
+
+asmlinkage __visible void __sched tracing_print_task_info(void)
+{
+	struct task_struct *tsk = current;
+	if (tsk->thread_info.flags & TIF_NEED_RESCHED) {
+		printk("%s TIF_NEED_RESCHED", tsk->comm);
+	}
+}
+EXPORT_SYMBOL(tracing_print_task_info);
 
 /*
  * synchronize_rcu_tasks() makes sure that no task is stuck in preempted
