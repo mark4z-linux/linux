@@ -14,7 +14,7 @@
                 "-append",
                 "\"root=/dev/vda rw console=ttyS0,nokaslr\"",
                 "-drive",
-                "file=../busybox/rootfs.img,format=raw,id=hd0",
+                "file=./rootfs.img,format=raw,id=hd0",
                 "-device",
                 "virtio-blk-device,drive=hd0",
                 "-smp",
